@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Preprocessing",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/src/1_preprocessing.py",
+      "python": "${workspaceFolder}/.venv/Scripts/python",
+      "args": [
+        ">",
+        "./outputs/1_output_preprocessing.txt"
+      ],
+      "justMyCode": true,
+      "stopOnEntry": false,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Clustering",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/src/2_clustering.py",
+      "python": "${workspaceFolder}/.venv/Scripts/python",
+      "args": [
+        ">",
+        "./outputs/2_output_clustering.txt"
+      ],
+      "justMyCode": true,
+      "stopOnEntry": false,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Associative rules",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/src/3_associative_rules.py",
+      "python": "${workspaceFolder}/.venv/Scripts/python",
+      "args": [
+        ">",
+        "./outputs/3_output_associative_rules.txt"
+      ],
+      "justMyCode": true,
+      "stopOnEntry": false,
+      "console": "integratedTerminal"
+    }
+  ]
+}

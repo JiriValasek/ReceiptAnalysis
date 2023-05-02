@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "receiptanalysis"
+version = "0.1.0"
+description = "Project for a receipt analysis of a dataset from kaggle"
+authors = ["Jiří Valášek <jirka@example.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.scripts]
+preprocessing = "src.1_preprocessing:run"
+clustering = "src.2_clustering:run"
+associative_rules = "src.3_associative_rules:run"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+tqdm = "^4.65.0"
+numpy = "^1.24.2"
+cupy-cuda12x = "^12.0.0"
+scipy = "^1.10.1"
+scikit-learn = "^1.2.2"
+matplotlib = "^3.7.1"
+apyori = "^1.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+mypy = "^1.1.1"
+pylint = "^2.17.1"
+pydocstyle = "^6.3.0"
+bandit = "^1.7.5"
+flake8 = "^6.0.0"
+
+[tool.black]
+line-length = 119
+
+[tool.mypy]
+python_version = "3.11"
+disallow_untyped_defs = true
+show_error_codes = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+exclude = ["scripts", "docs", "test"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "data"]
+
+[tool.flake8]
+max-line-length = 119
+count = true
+
+[tool.pylint.format]
+max-line-length = 119
+max-module-lines = 1000
+disable = [
+  "missing-docstring",
+  "unused-argument",
+  "no-value-for-parameter",
+  "no-member",
+  "no-else-return",
+  "bad-whitespace",
+  "bad-continuation",
+  "line-too-long",
+  "fixme",
+  "protected-access",
+  "too-few-public-methods",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

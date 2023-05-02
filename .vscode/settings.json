@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": false,
+    "python.linting.mypyEnabled": true,
+    "python.linting.banditEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.lintOnSave": true,
+    "flake8.args": [
+        "--config-toml=/path/to/pyproject.toml"
+    ],
+    "[python]": {
+        "editor.formatOnSave": true
+        
+    },
+    "python.formatting.provider": "black"
+}
