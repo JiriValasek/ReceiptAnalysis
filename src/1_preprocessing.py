@@ -57,7 +57,7 @@ for i in range(10):
 # Convert to numpy array and sort by userId to speed up processing
 dataM = np.array(data, dtype=object)
 dataM = dataM[dataM[:, STRUCTURE["user_id"]] != -1]
-ind = np.lexsort((dataM[:, STRUCTURE["order_id"]], dataM[:, STRUCTURE["user_id"]]))
+ind = np.lexsort((dataM[:, STRUCTURE["category_id"]], dataM[:, STRUCTURE["order_id"]], dataM[:, STRUCTURE["user_id"]]))
 dataM = dataM[ind]
 dataM = dataM[: min([len(dataM), USER_RECORDS_LIMIT])]
 

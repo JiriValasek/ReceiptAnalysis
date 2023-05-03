@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 # Limit how many product items should be processed
 USER_RECORDS_LIMIT = 100000  # TODO include in filenames to reduce necessary number of preprocessing
+CLUSTER_SIZE = 100
 PREPROCESSED_MATRICES = os.path.abspath(
     os.path.join(os.path.realpath(__file__), "..", "..", "data", "preproccessed_" + str(USER_RECORDS_LIMIT) + ".npy")
 )
@@ -119,6 +120,27 @@ for data in zip(
             * np.sqrt(np.sum(np.square(data[0]), 1)).reshape([data[0].shape[0], 1])
         )
     )
+
+    print("Drawing an elbow rule.")
+    # Create the scatter plot
+    sorted_distances = np.sort(distances, axis=1)
+    y = np.sort(sorted_distances[:, CLUSTER_SIZE])
+    x = np.arange(y.shape[0])
+    fig = plt.figure(figsize=FIGURE_SIZE)
+    # plt.xscale("log")
+    plt.plot(x, y)
+    plt.grid(visible=True, which="both")
+    # Set the title and axis labels
+    plt.title(data[1] + " K=" + str(CLUSTER_SIZE), fontsize=12, pad=10)
+    plt.xlabel("Points", fontsize=12, labelpad=5)
+    plt.ylabel("Distance", fontsize=12, labelpad=5)
+    # Adjust plot margins to ensure axis labels are within the image
+    plt.subplots_adjust(left=0.15, right=0.97, top=0.93, bottom=0.1)
+    # Save the figure as an SVG file
+    # plt.show()
+    plt.savefig(data[3], format="svg")
+    # plt.close(fig)
+
     for i in tqdm(range(distances.shape[0])):
         distances[i, : i + 1] = np.nan
     counts, bins = np.histogram(distances[~np.isnan(distances)], bins=100)
@@ -138,25 +160,6 @@ for data in zip(
     # plt.show()
     plt.savefig(data[2], format="svg")
     # plt.close(fig)
-
-    print("Drawing an elbow rule.")
-    # Create the scatter plot
-    fig = plt.figure(figsize=FIGURE_SIZE)
-    neighbors = np.cumsum(counts)
-    plt.xscale("log")
-    plt.plot(np.array([np.nan] + neighbors.tolist()), bins)
-    plt.grid(visible=True, which="both")
-    # Set the title and axis labels
-    plt.title(data[1], fontsize=12, pad=10)
-    plt.xlabel("Points", fontsize=12, labelpad=5)
-    plt.ylabel("Distance", fontsize=12, labelpad=5)
-    # Adjust plot margins to ensure axis labels are within the image
-    plt.subplots_adjust(left=0.15, right=0.97, top=0.93, bottom=0.1)
-    # Save the figure as an SVG file
-    # plt.show()
-    plt.savefig(data[3], format="svg")
-    # plt.close(fig)
-
 
 print("Computing PCA")
 pca = PCA(n_components=PCA_N_COMPONENTS)
@@ -217,7 +220,7 @@ for data3 in zip(
     ["Products TF-IDF DBSCAN clusters", "Categories TF-IDF DBSCAN clusters"],
     [PRODUCTS_DBSCAN_IMG, CATEGORIES_DBSCAN_IMG],
     [(70, 20), (20, 60)],
-    [(0.3, 100), (0.25, 100)],
+    [(0.3, CLUSTER_SIZE), (0.25, CLUSTER_SIZE)],
     [
         ("Products cluster histogram", PRODUCTS_CLUSTER_HIST_IMG),
         ("Category cluster histogram", CATEGORIES_CLUSTER_HIST_IMG),

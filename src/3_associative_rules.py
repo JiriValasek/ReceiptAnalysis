@@ -2,7 +2,7 @@
 import os
 import json
 import numpy as np
-from apyori import apriori, dump_as_json
+from apyori import apriori, RelationRecord
 
 # Limit how many product items should be processed
 USER_RECORDS_LIMIT = 100000  # TODO include in filenames to reduce necessary number of preprocessing
@@ -22,6 +22,20 @@ PREPROCESSED_PCA_MATRICES = os.path.abspath(
 ASSIGNED_LABELS = os.path.abspath(
     os.path.join(os.path.realpath(__file__), "..", "..", "data", "assigned_labels_" + str(USER_RECORDS_LIMIT) + ".npy")
 )
+
+
+def rule_to_json_obj(rule: RelationRecord) -> str:
+    ruleset = {"items": list(rule.items), "support": rule.support, "rules": []}
+    for stat in rule.ordered_statistics:
+        x = {
+            "antecedent": list(stat.items_base),
+            "consequent": list(stat.items_add),
+            "lift": stat.lift,
+            "confidence": stat.confidence,
+        }
+        ruleset["rules"].append(x)
+    return json.dumps(ruleset, indent=2)
+
 
 if not os.path.exists(PREPROCESSED_MATRICES) or not os.path.exists(PREPROCESSED_TFIDF_MATRICES):
     print("Preprocessed files unavailable. Do preprocessing first.")
@@ -131,13 +145,13 @@ for label in np.unique(products_labels)[1:]:
                     "..",
                     "..",
                     "rules",
-                    "product_cluster_" + str(label) + "_rules_" + str(i) + ".json",
+                    "product_cluster_" + str(label) + "_ruleset_" + str(i) + ".json",
                 )
             ),
             "wt",
             encoding="utf-8",
         ) as f:
-            dump_as_json(result_list[i], f)
+            f.write(rule_to_json_obj(result_list[i]))
 
 
 for label in np.unique(categories_labels)[1:]:
@@ -214,12 +228,12 @@ for label in np.unique(categories_labels)[1:]:
                     "..",
                     "..",
                     "rules",
-                    "category_cluster_" + str(label) + "_rules_" + str(i) + ".json",
+                    "category_cluster_" + str(label) + "_ruleset_" + str(i) + ".json",
                 )
             ),
             "wt",
             encoding="utf-8",
         ) as f:
-            dump_as_json(result_list[i], f)
+            f.write(rule_to_json_obj(result_list[i]))
 
 print("Finished.")
