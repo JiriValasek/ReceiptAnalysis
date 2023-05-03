@@ -1,6 +1,8 @@
 # ReceiptAnalysis
 
-Project for a receipt analysis of a dataset from kaggle.
+Project for a receipt analysis of a dataset from kaggle. 
+
+Full report (CS only) is [here](https://github.com/JiriValasek/ReceiptAnalysis/blob/main/report_cs.pdf)
 
 ## Requirements
 
